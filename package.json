@@ -1,0 +1,17 @@
+{
+  "name": "thoth-nas-cloud-server",
+  "version": "2.0.0",
+  "description": "Multi-Drive 24/7 NAS Cloud Storage & Stocks Analytics Explorer for THOTH_AI on Raspberry Pi",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "node api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": ["nas", "cloud-storage", "raspberry-pi", "vercel", "stocks-analytics", "multi-drive"],
+  "author": "Youssef / THOTH_AI",
+  "license": "MIT"
+}

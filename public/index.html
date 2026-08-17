@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THOTH // 24/7 Multi-Drive NAS Cloud &amp; Analytics Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="ambient-glow bg-cyan"></div>
+<div class="ambient-glow bg-purple"></div>
+
+<div class="app-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="nas-sidebar">
+    <div class="brand-box">
+      <div class="brand-badge">
+        <i class="fa-solid fa-server"></i>
+        <span>NAS CLOUD OS</span>
+      </div>
+      <h1 class="brand-title">THOTH STORAGE</h1>
+    </div>
+
+    <!-- Target Host Box -->
+    <div class="host-pill-box">
+      <div class="host-pill-label"><i class="fa-solid fa-microchip"></i> Raspberry Pi Node</div>
+      <input type="text" id="nas-target-host" placeholder="http://192.168.1.12:3000" value="">
+    </div>
+
+    <!-- Partition List -->
+    <div class="sidebar-section-title">Connected Storage Drives (9 USBs)</div>
+    <div class="drives-list" id="drives-list">
+      <!-- Generated dynamically -->
+      <div class="drive-item active" data-drive="nas_main">
+        <div class="drive-icon rw"><i class="fa-solid fa-hard-drive"></i></div>
+        <div class="drive-details">
+          <div class="drive-name">THOTH_NAS_MAIN</div>
+          <div class="drive-sub">128 GB • Read / Write</div>
+        </div>
+      </div>
+      <div class="drive-item" data-drive="stocks_analytics">
+        <div class="drive-icon ro"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="drive-details">
+          <div class="drive-name">STOCKS_ANALYTICS</div>
+          <div class="drive-sub">64 GB • Read-Only (Reports)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="storage-gauge-wrap">
+        <div class="storage-gauge-text">
+          <span>Global Capacity</span>
+          <strong id="global-storage-percent">15%</strong>
+        </div>
+        <div class="storage-progress-bar"><div class="storage-progress-fill" style="width:15%;"></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="nas-main">
+    <!-- Top Action Bar -->
+    <header class="nas-topbar">
+      <div class="topbar-left">
+        <div class="active-drive-indicator">
+          <span class="pulse-indicator"></span>
+          <span class="active-drive-title" id="active-drive-title">THOTH_NAS_MAIN (128GB)</span>
+          <span class="badge-ro-rw" id="active-perm-badge">⚡ READ / WRITE</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button type="button" class="topbar-btn" id="btn-refresh-files" title="Refresh files">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+        <button type="button" class="topbar-btn btn-new-folder" id="btn-create-folder" title="Create New Folder">
+          <i class="fa-solid fa-folder-plus"></i> <span>New Folder</span>
+        </button>
+        <label class="topbar-btn btn-upload-file" id="btn-upload-label" title="Upload files to active drive">
+          <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Files</span>
+          <input type="file" id="file-upload-input" multiple style="display:none;">
+        </label>
+      </div>
+    </header>
+
+    <!-- Quick Stats Cards -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon cyan"><i class="fa-solid fa-folder-open"></i></div>
+        <div>
+          <div class="stat-val" id="stat-files-count">--</div>
+          <div class="stat-lbl">Active Items</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold"><i class="fa-solid fa-chart-line"></i></div>
+        <div>
+          <div class="stat-val" id="stat-reports-count">--</div>
+          <div class="stat-lbl">Stock Reports</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-shield-halved"></i></div>
+        <div>
+          <div class="stat-val">8 / 9</div>
+          <div class="stat-lbl">Protected Partitions</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-network-wired"></i></div>
+        <div>
+          <div class="stat-val" id="stat-pi-status">CONNECTED</div>
+          <div class="stat-lbl">Raspberry Pi 4B</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breadcrumb Path Bar -->
+    <div class="breadcrumb-bar">
+      <div class="breadcrumbs" id="breadcrumbs">
+        <span class="crumb-root"><i class="fa-solid fa-house"></i> Root</span>
+      </div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-files-input" placeholder="Search files in drive...">
+      </div>
+    </div>
+
+    <!-- File Explorer Grid -->
+    <section class="explorer-body">
+      <div class="file-grid" id="file-grid">
+        <!-- Dynamically injected items -->
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Modal: New Folder -->
+<div id="modal-folder" class="modal-backdrop" style="display:none;">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-folder-plus"></i> Create New Folder</h3>
+      <button type="button" class="btn-close-modal" onclick="$('modal-folder').style.display='none';"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="text" id="new-folder-name" class="modal-input" placeholder="Folder Name (e.g. Invoices, Videos, Reports)">
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn-cancel" onclick="$('modal-folder').style.display='none';">Cancel</button>
+      <button type="button" class="btn-create" id="btn-submit-mkdir">Create Folder</button>
+    </div>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
